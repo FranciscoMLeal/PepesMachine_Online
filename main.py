@@ -422,26 +422,31 @@ class ADNprocessor:
 ### KEYBOARD INTERACTION COMMANDS FOR FRONTRUNNING THE MACHINE ::::        
 
 async def main():   
+    timer_speed = 1
     grid = GridGenerator()
     running = True
     new = StartPepeFunction()
     while running:
       for event in pygame.event.get():
+        print("EVENT")
         if event.type == pygame.QUIT:
           print(steps,"steps")
           running = False
+          
+       
 
-
-
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
-            ADN = []
-            new = StartPepeFunction()
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
+            if timer_speed == 1:
+                timer_speed = 0.1
+            else:
+                timer_speed = 1
+                
         
-        await asyncio.sleep(0)
-        new = StartPepeFunction()
-        time.sleep(1)
+      await asyncio.sleep(0)
+      new = StartPepeFunction()
+      time.sleep(timer_speed)
 
-
+print("NIT_EVENT")
 asyncio.run( main() )
 
 #     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
