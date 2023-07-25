@@ -33,7 +33,7 @@ def get_canvas_dimensions():
     divAlt = int((altTela/canvas_dividend)/2)
     return altTela,largTela,divAlt,divLarg
     
-def get_final_pepecolors(number_of_colors = 6):
+def get_final_pepecolors(number_of_colors):
     FinalPepeColors = {}
     with open("twin_text.txt", "r") as f:
         lines = f.readlines()
@@ -94,9 +94,9 @@ ADN = []
 patternEssencials = [divLarg,divAlt,largTela,altTela,screen]
 
 
-FinalPepeColors = get_final_pepecolors(10)
+FinalPepeColors = get_final_pepecolors(random.randrange(4,6))
 
-def set_new_colors(number_of_colors = 8):
+def set_new_colors(number_of_colors):
     global FinalPepeColors
     FinalPepeColors = get_final_pepecolors(number_of_colors)
 
@@ -207,9 +207,11 @@ class PepeDrawer:
         patternEssencials = []
         patternEssencials = [self.divLarg,self.divAlt,self.largTela,self.altTela,screen]
         patrao = PatternStyles(self.CorFundo,self.CorPattern,Filletes,patternEssencials,(self.FirstX,self.FirstY),(self.SecX,self.SecY))
+        pattern_time_interval = 0.2
         if self.ShapeComand == "c":
             patrao.MakesCirclesOnFillete()      
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         #elif self.ShapeComand == "pepes":
         #    patrao.pepesAiSignature(FinalPepeColors)    
@@ -217,75 +219,93 @@ class PepeDrawer:
         #    ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "cic":
             patrao.MakesCirclesinCirclesOnFillete()    
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "cp":
             patrao.MakesCirclesPatternOnFillete(self.CorPattern)     
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "t":
             patrao.MakesTriangleOnFillete(self.CorPattern)               
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "tp":
             patrao.MakesTrianglePatternOnFillete()         
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "vlp":
             patrao.MakesVerticalLinePatternOnFillete()     
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "hlp":
             patrao.MakesHorizontalLinePatternOnFillete()   
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "pq":
             patrao.MakesPatternQuadradosOnFillete()        
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "st":
             patrao.MakesStairsonFillete()                  
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "gr":
             patrao.MakesGridonFillete()                  
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "sqi":
             patrao.MakeSquaresInsideSquares()               
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "lil":
             patrao.MakesLosangleInsideLosangle()                
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "l":
             patrao.MakesLosangleFillete()                  
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "lp":
             patrao.MakesLosanglePatternFillete()                  
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "s":                    
             patrao.MakeSetas()
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "tgp":                    
             patrao.MakesTriangleGridPatternFillete()
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "dl":                    
             patrao.MakesDistortLosanglesPatternFillete()
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "45":
             patrao.Makes45gLinesPatternFillete()                    
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "zz":
             patrao.MakesZigZagPatternFillete()                    
-            #pygame.display.flip()
+            # pygame.display.flip()
+            time.sleep(pattern_time_interval)
             ShapeComandHolder.append(self.ShapeComand)
         else:
             print("You did nothing BITCH")
@@ -363,8 +383,6 @@ class StartPepeFunction:
                 ###
                 y = y + NewNum
             print(self.Xpoints,self.Ypoints)
-    def get_screen(self):
-        return self.screen
             
 
 class ClicktoChangePP:
@@ -529,10 +547,10 @@ class ADNprocessor:
 ### ASYNCIO STARTER FOR ONLINE VERSION VISIT FOR MORE INFO on full instalation : https://www.youtube.com/watch?v=6PhDmpBcezQ&ab_channel=FinFET::::        
 
 async def main():   
-    timer_speed = 1
+    timer_speed = 1.5
     grid = GridGenerator()
     running = True
-    new = StartPepeFunction()
+    # new = StartPepeFunction()
     while running:
       for event in pygame.event.get():
           
@@ -541,14 +559,63 @@ async def main():
           print(steps,"steps")
           running = False
         if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
-            if timer_speed == 1:
-                timer_speed = 0.1
-            else:
-                timer_speed = 1
+            number_of_colors = random.randrange(5,10)
+            set_new_colors(number_of_colors)
+            # if timer_speed == 1:
+            #     timer_speed = 0.1
+            # else:
+            #     timer_speed = 1
                 
         
-      await asyncio.sleep(0)
-      new = StartPepeFunction()
+    #   await asyncio.sleep(0)
+    #   grid = GridGenerator()
+    
+    
+    
+    
+    
+    
+      
+      # new = StartPepeFunction()
+      
+
+      Xpoints = [] 
+      set_ADN_to_nothing()
+      
+      altTela,largTela,divAlt,divLarg= get_canvas_dimensions()
+      
+      
+      x = 0
+      while x < divLarg:
+          Xpoints.append(x)
+          NewNum = random.choice(RandomNum) ### PEPESAI COULD MESS AROUND HERE
+          x = x + NewNum
+      Xpoints.append(divLarg) # adds last point of grid
+      rowNumber = len(Xpoints)
+      
+      a = 0
+      while a < rowNumber-1:
+          a = a + 1
+          Ypoints = []
+          y = 0
+          while y < divAlt:
+              Ypoints.append(y)
+              #pygame.display.flip
+              NewNum = random.choice(RandomNum) ### PEPESAI COULD MESS AROUND HERE
+              if y + NewNum > divAlt:   ### condition for not going out of the canvas in y direction
+                  NewNum = divAlt - y
+              NewPepe = PepeAI()
+              #NewPepe = check_for_touching_colors(ADN,NewPepe,a,y,NewNum)
+              newPepitos = PepeDrawer(NewPepe.colorFundo,NewPepe.colorPattern,(Xpoints[a-1],y),(Xpoints[a],y+NewNum),NewPepe.ShapeComand)
+              newPepitos.startbyFilette()
+              ADN.append((NewPepe.colorFundo,NewPepe.colorPattern,(Xpoints[a-1],y),(Xpoints[a],y+NewNum),newPepitos.ShapeComand))
+              ### Save Here The Pepe Reference Coordinates
+              ###
+              y = y + NewNum
+              await asyncio.sleep(0)
+
+          print(Xpoints,Ypoints)
+      
       time.sleep(timer_speed)
 
 asyncio.run( main() )
