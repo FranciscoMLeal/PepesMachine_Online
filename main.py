@@ -403,23 +403,7 @@ class ADNprocessor:
     
 
             
-
-# class OnlineStarter:
-#     def startmeUp():
-#         first_jpg = StartPepeFunction()
-#         first_adn = ADN
-#         first_return = pygame.image.save(screen , "tester")
-#         return (first_return)
-        
-
-# lets_go = OnlineStarter.startmeUp()
-        
-
-
-   
-   
-            
-### KEYBOARD INTERACTION COMMANDS FOR FRONTRUNNING THE MACHINE ::::        
+### ASYNCIO STARTER FOR ONLINE VERSION VISIT FOR MORE INFO on full instalation : https://www.youtube.com/watch?v=6PhDmpBcezQ&ab_channel=FinFET::::        
 
 async def main():   
     timer_speed = 1
@@ -428,13 +412,11 @@ async def main():
     new = StartPepeFunction()
     while running:
       for event in pygame.event.get():
-        print("EVENT")
+          
+          
         if event.type == pygame.QUIT:
           print(steps,"steps")
           running = False
-          
-       
-
         if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
             if timer_speed == 1:
                 timer_speed = 0.1
@@ -446,7 +428,6 @@ async def main():
       new = StartPepeFunction()
       time.sleep(timer_speed)
 
-print("NIT_EVENT")
 asyncio.run( main() )
 
 #     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
