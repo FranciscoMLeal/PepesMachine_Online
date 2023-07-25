@@ -1,6 +1,6 @@
 from os import write, replace
 from typing import Pattern, Text
-import pygame,sys
+import pygame
 import random
 from PepePatterns import PatternStyles
 from datetime import datetime
@@ -11,19 +11,62 @@ import importlib
 
 import asyncio
 
+screen = pygame.display.set_mode((500, 500))
+
+def get_canvas_dimensions():
+    # with open("twin_text.txt", "r") as f:
+    #     lines = f.readlines()
+    # for line in lines:
+    #     if "height" in line:
+    #         altTela = int(line.split("=")[1])
+    #     if "width" in line:
+    #         largTela = int(line.split("=")[1])
+    #     if "canvas_dividend" in line:
+    #         canvas_dividend = int(line.split("=")[1])
+    altTela = 500
+    largTela = 500
+    canvas_dividend = 25
+    #Programar aqui self.DivLarg
+    divLarg = int((largTela/canvas_dividend)/2)    #int(input("Numero de lados:"))
+    if divLarg <= 5:
+        divLarg = 6
+    divAlt = int((altTela/canvas_dividend)/2)
+    return altTela,largTela,divAlt,divLarg
+    
+def get_final_pepecolors(number_of_colors = 6):
+    FinalPepeColors = {}
+    with open("twin_text.txt", "r") as f:
+        lines = f.readlines()
+    for line in lines:
+        if "FinalPepeColors" in line:
+            All_Colors = eval(line.split("=")[1])
+            print(f"ALLLL COLORS = {All_Colors}")
+            break
+    x = 0
+    while x <= number_of_colors - 1:
+        y = random.randrange(0,len(All_Colors))
+        FinalPepeColors[x] = All_Colors[y]
+        print(f"FINALPEPECOLORS = {FinalPepeColors[x]}")
+        z = 0
+        while z < x:
+            if FinalPepeColors[x] == FinalPepeColors[z]:
+                x = x - 1
+                break
+            z = z + 1
+        x = x + 1 
+    return(FinalPepeColors)
+            
+
+
+
 canIgoback = False
 canIgobackintoFuture = False
 gofoward = True
-
 isdrawn = 0
-largTela = 500 #int(input("largura da tela em cm:")) 
-# altura da tela
-altTela = 500 #int(input("altura da tela em cm:"))
-# Divisores
-divLarg = int((largTela/20)/2)    #int(input("Numero de lados:"))
-if divLarg <=5:
-    divLarg = 6
-divAlt = int((altTela/20)/2)      #int(input("Numero de pisos:"))
+
+
+
+altTela,largTela,divAlt,divLarg = get_canvas_dimensions()
 x = 0
 y = 0
 steps = 0
@@ -36,15 +79,14 @@ PatColorHolder = []
 CorFundoHolder = ["#000000","#000000"]
 CorPatternHolder = ["#000000","#000000"]
 ShapeComandHolder = ["tt"]
-ShapeComandList = ["gr","pq","l","lp","dl","s","cp","t","tp","tgp","zz","vlp","hlp","45","lil","pepes"]
-ShapeComandSquaresList = ["c","st","gr","pq","cic","l","lp","dl","s","cp","t","tp","tgp","zz","vlp","hlp","45","lil","sqi","pepes"] ## "c","cic,"st","sqi" PATTERNS MISSING HERE
+ShapeComandList = ["gr","pq","l","lp","dl","s","cp","t","tp","tgp","zz","vlp","hlp","45","lil"]#,"pepes"]
+#ShapeComandSquaresList = ["c","st","gr","pq","cic","l","lp","dl","s","cp","t","tp","tgp","zz","vlp","hlp","45","lil","sqi","pepes"] ## "c","cic,"st","sqi" PATTERNS MISSING HERE
 Ypoints = []
 points = []
 
 #SavePepes = []
 choosePat = False
 
-screen = pygame.display.set_mode((largTela, altTela))
 RandomNum = [2,3,4,5]
 
 ADN = []
@@ -52,44 +94,39 @@ ADN = []
 patternEssencials = [divLarg,divAlt,largTela,altTela,screen]
 
 
-FinalPepeColors = ["#F5E2AA", "#F2C546", "#DC7648", "#E9B8CE", "#83C1CE", "#5A72EC", "#3164A6", "#D65267", "#0C0103"]
-#FinalPepeColors = ["#0A2463","#4200DC","#690AAE","#D8315B","#F74A84","#A9FDAC","#32A287"]
-#CoresPattern = ["#D8315B","#F74A84","#66E88F","#0A2463","#4200DC",]
+FinalPepeColors = get_final_pepecolors(10)
+
+def set_new_colors(number_of_colors = 8):
+    global FinalPepeColors
+    FinalPepeColors = get_final_pepecolors(number_of_colors)
 
 AdnRegistry  = open("babypepes.py", "a+")
 CanvasRegistry  = open("babypepesCanvassize.py", "a+")
 
 SavedPepe = []
 
-
-
-
-
-
-
-
+def set_ADN_to_nothing():
+    global ADN
+    ADN = []
 
 class GridGenerator:    
     def __init__(self):
         self.background_colour = (255,255,255)
-        self.screen = pygame.display.set_mode((largTela, altTela))
+        self.screen = screen
         self.name = pygame.display.set_caption('RLBB')
         self.screen.fill(self.background_colour)
         
 
-    def draw(self):    
-        for y in range(divAlt):
-            for x in range(divLarg):
+    def draw(self):
+        self.altTela,self.largTela,self.divAlt,self.divLarg = get_canvas_dimensions()
+        for y in range(self.divAlt):
+            for x in range(self.divLarg):
                 self.PatColor = random.choice(FinalPepeColors)
-                self.imaa = pygame.draw.rect(self.screen,self.PatColor,((largTela/divLarg)*x,((altTela/divAlt)*y),largTela/divLarg,altTela/divAlt))
+                self.imaa = pygame.draw.rect(self.screen,self.PatColor,((self.largTela/self.divLarg)*x,((self.altTela/self.divAlt)*y),self.largTela/self.divLarg,self.altTela/self.divAlt))
                 x+=1
             x=0
             y+=1
-        pygame.display.flip()   
-
-
-
-        
+        pygame.display.flip()           
 
 class PepeAI:
     def __init__(self):
@@ -103,13 +140,13 @@ class PepeAI:
 
         #print("FUNDO COLOR HOLDER =", CorFundoHolder[-1],"NEW FUNDO COLOR =",self.colorFundo,"OLD PATTERN COLOR =",CorPatternHolder[-1],"NEW PATTERN COLOR",self.colorPattern )
 
-        while self.colorPattern == self.colorFundo or self.colorPattern == CorPatternHolder[-1] or self.colorFundo == CorFundoHolder[-1] or self.colorFundo == CorPatternHolder[-1] or self.colorPattern == CorFundoHolder[-1]:
+        while self.colorPattern == self.colorFundo: # or self.colorPattern == CorPatternHolder[-1]:# or self.colorFundo == CorFundoHolder[-1] or self.colorFundo == CorPatternHolder[-1] or self.colorPattern == CorFundoHolder[-1]:
             self.colorPattern = random.choice(self.pepeCores)
             self.colorFundo = random.choice(self.pepeCores)
-            #print("REPEAT MODE ACTIVATED : FUNDO COLOR HOLDER =", CorFundoHolder[-1],"NEW FUNDO COLOR =",self.colorFundo,"OLD PATTERN COLOR =",CorPatternHolder[-1],"NEW PATTERN COLOR",self.colorPattern )
-                
-        CorFundoHolder.append(self.colorFundo)
-        CorPatternHolder.append(self.colorPattern)
+        #    #print("REPEAT MODE ACTIVATED : FUNDO COLOR HOLDER =", CorFundoHolder[-1],"NEW FUNDO COLOR =",self.colorFundo,"OLD PATTERN COLOR =",CorPatternHolder[-1],"NEW PATTERN COLOR",self.colorPattern )
+        #        
+        #CorFundoHolder.append(self.colorFundo)
+        #CorPatternHolder.append(self.colorPattern)
             
     def GetPatternShape(self):
         
@@ -126,8 +163,11 @@ class PepeDrawer:
         self.FirstX,self.FirstY = PepeQuad1
         self.SecX,self.SecY = PepeQuad2
         self.ShapeComand = ShapeComand      
-
-        #SavePepes.append(((self.FirstX,self.FirstY),(self.SecX,self.SecY)))
+        self.screen = screen
+        
+        ###################
+        
+        self.altTela,self.largTela,self.divAlt,self.divLarg = get_canvas_dimensions()
 
     #### DRAWS FUNDOS    
     def startbyFilette(self):        
@@ -145,19 +185,19 @@ class PepeDrawer:
         else:
             self.SizeY = (self.SecY - self.FirstY)     
             
-        self.RealDirectionX = self.SizeX * (largTela/divLarg)
-        self.RealDirectionY = self.SizeY * (altTela/divAlt)
+        self.RealDirectionX = self.SizeX * (self.largTela/self.divLarg)
+        self.RealDirectionY = self.SizeY * (self.altTela/self.divAlt)
 
         ### Transforms Square Fillettes Patterns in circles and Stairs
-        if self.SizeX == self.SizeY and choosePat == False:
-            self.ShapeComand = random.choice(ShapeComandSquaresList)
-            while self.ShapeComand == ShapeComandHolder[-1]:
-                self.ShapeComand = random.choice(ShapeComandSquaresList)
+        #if self.SizeX == self.SizeY and choosePat == False:
+        #    self.ShapeComand = random.choice(ShapeComandSquaresList)
+        #    while self.ShapeComand == ShapeComandHolder[-1]:
+        #        self.ShapeComand = random.choice(ShapeComandSquaresList)
         Filletes.append((self.FirstX,self.FirstY,self.RealDirectionX,self.RealDirectionY))
 
-        pygame.draw.rect(screen,self.CorFundo,((largTela/divLarg)*self.FirstX,((altTela/divAlt)*self.FirstY),self.RealDirectionX,self.RealDirectionY))
-        pygame.display.flip()
+        pygame.draw.rect(screen,self.CorFundo,((self.largTela/self.divLarg)*self.FirstX,((self.altTela/self.divAlt)*self.FirstY),self.RealDirectionX,self.RealDirectionY))
         self.DrawPattern()
+        pygame.display.flip()
 
 
 
@@ -165,106 +205,142 @@ class PepeDrawer:
 
     def DrawPattern(self):
         patternEssencials = []
-        patternEssencials = [divLarg,divAlt,largTela,altTela,screen]
+        patternEssencials = [self.divLarg,self.divAlt,self.largTela,self.altTela,screen]
         patrao = PatternStyles(self.CorFundo,self.CorPattern,Filletes,patternEssencials,(self.FirstX,self.FirstY),(self.SecX,self.SecY))
         if self.ShapeComand == "c":
             patrao.MakesCirclesOnFillete()      
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
-        elif self.ShapeComand == "pepes":
-            patrao.pepesAiSignature(FinalPepeColors)    
-            pygame.display.flip()
-            ShapeComandHolder.append(self.ShapeComand)
+        #elif self.ShapeComand == "pepes":
+        #    patrao.pepesAiSignature(FinalPepeColors)    
+        #    #pygame.display.flip()
+        #    ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "cic":
             patrao.MakesCirclesinCirclesOnFillete()    
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "cp":
             patrao.MakesCirclesPatternOnFillete(self.CorPattern)     
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "t":
             patrao.MakesTriangleOnFillete(self.CorPattern)               
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "tp":
             patrao.MakesTrianglePatternOnFillete()         
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "vlp":
             patrao.MakesVerticalLinePatternOnFillete()     
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "hlp":
             patrao.MakesHorizontalLinePatternOnFillete()   
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "pq":
             patrao.MakesPatternQuadradosOnFillete()        
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "st":
             patrao.MakesStairsonFillete()                  
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "gr":
             patrao.MakesGridonFillete()                  
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "sqi":
             patrao.MakeSquaresInsideSquares()               
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "lil":
             patrao.MakesLosangleInsideLosangle()                
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "l":
             patrao.MakesLosangleFillete()                  
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "lp":
             patrao.MakesLosanglePatternFillete()                  
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "s":                    
             patrao.MakeSetas()
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "tgp":                    
             patrao.MakesTriangleGridPatternFillete()
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "dl":                    
             patrao.MakesDistortLosanglesPatternFillete()
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "45":
             patrao.Makes45gLinesPatternFillete()                    
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         elif self.ShapeComand == "zz":
             patrao.MakesZigZagPatternFillete()                    
-            pygame.display.flip()
+            #pygame.display.flip()
             ShapeComandHolder.append(self.ShapeComand)
         else:
             print("You did nothing BITCH")
 
-    
+    #(y1 <= nY < y2 or y1 < sY <= y2 or nY <= y1 < sY)
+def forgivemePepes():
+    forgive = 0
+    while forgive < 20:
+        print("LORD FORGIVE ME BUT I'M NOT A PEPE")
+        forgive = forgive + 1
 
+def check_for_touching_colors(self,ADN,NewPepe,a,y,NewNum):
+    print("Checking for color in here !!!!")
+    tester_i = 0
+    ll = len(ADN)
+    touched_colors = []
+    while tester_i < ll:
+        cor_cobaia, cor2_cobaia, (x1,y1), (x2, y2), pattern_cobaia = ADN[tester_i]
+        if (x2 == self.Xpoints[a-1] and (y1 <= y < y2 or y1 < y+NewNum <= y2 or y < y1 < y+NewNum)) or tester_i == ll - 1:# and (cor_cobaia == NewPepe.colorFundo or cor_cobaia == NewPepe.colorPattern or cor2_cobaia == NewPepe.colorFundo or cor2_cobaia == NewPepe.colorPattern)) or (tester_i == ll - 1 and (cor_cobaia == NewPepe.colorFundo or cor_cobaia == NewPepe.colorPattern or cor2_cobaia == NewPepe.colorFundo or cor2_cobaia == NewPepe.colorPattern)):
+            touched_colors.append((cor_cobaia,cor2_cobaia,pattern_cobaia))
+            #touched_colors.append(cor2_cobaia)
+        tester_i = tester_i + 1
+    nbr_touched_colors = len(touched_colors)
+    t = 0
+    cancel_operation = 0
+    while t < nbr_touched_colors:
+        if NewPepe.colorFundo == touched_colors[t][0] or NewPepe.colorFundo == touched_colors[t][1] or NewPepe.colorPattern == touched_colors[t][0] or NewPepe.colorPattern == touched_colors[t][1] or NewPepe.ShapeComand == touched_colors[t][2]:
+            if cancel_operation > 500:
+                forgivemePepes()
+                break
+            print(f"RECOLORING:::: {NewPepe.ShapeComand} = {pattern_cobaia} for {cancel_operation} nmbr of times")
+            NewPepe = PepeAI()   
+            cancel_operation = cancel_operation + 1
+            t = 0
+        else:
+            t = t + 1
+    return(NewPepe)
 
 class StartPepeFunction:
     def __init__(self):
-        self.Xpoints = []
+        self.Xpoints = [] 
+        set_ADN_to_nothing()
+        self.screen = screen
+        
+        self.altTela,self.largTela,self.divAlt,self.divLarg= get_canvas_dimensions()
+        
         self.start()
         
     def start(self):
         x = 0
-        while x < divLarg:
+        while x < self.divLarg:
             self.Xpoints.append(x)
             NewNum = random.choice(RandomNum) ### PEPESAI COULD MESS AROUND HERE
             x = x + NewNum
-        self.Xpoints.append(divLarg) # adds last point of grid
+        self.Xpoints.append(self.divLarg) # adds last point of grid
         self.rowNumber = len(self.Xpoints)
         
         a = 0
@@ -272,33 +348,40 @@ class StartPepeFunction:
             a = a + 1
             self.Ypoints = []
             y = 0
-            while y < divAlt:
+            while y < self.divAlt:
                 self.Ypoints.append(y)
-                pygame.display.flip
+                #pygame.display.flip
                 NewNum = random.choice(RandomNum) ### PEPESAI COULD MESS AROUND HERE
-                if y + NewNum > divAlt:   ### condition for not going out of the canvas in y direction
-                    NewNum = divAlt - y
+                if y + NewNum > self.divAlt:   ### condition for not going out of the canvas in y direction
+                    NewNum = self.divAlt - y
                 NewPepe = PepeAI()
+                NewPepe = check_for_touching_colors(self,ADN,NewPepe,a,y,NewNum)
                 newPepitos = PepeDrawer(NewPepe.colorFundo,NewPepe.colorPattern,(self.Xpoints[a-1],y),(self.Xpoints[a],y+NewNum),NewPepe.ShapeComand)
                 newPepitos.startbyFilette()
                 ADN.append((NewPepe.colorFundo,NewPepe.colorPattern,(self.Xpoints[a-1],y),(self.Xpoints[a],y+NewNum),newPepitos.ShapeComand))
                 ### Save Here The Pepe Reference Coordinates
                 ###
                 y = y + NewNum
-            print(self.Xpoints,self.Ypoints) 
+            print(self.Xpoints,self.Ypoints)
+    def get_screen(self):
+        return self.screen
+            
 
 class ClicktoChangePP:
     def __init__(self,x,y):
         self.x,self.y = x,y
-        NewX = divLarg
-        for cc in range(divLarg):
-            if self.x - (largTela/divLarg) <= (largTela/divLarg) * cc: 
+        
+        self.altTela,self.largTela,self.divAlt,self.divLarg = get_canvas_dimensions()
+        
+        NewX = self.divLarg
+        for cc in range(self.divLarg):
+            if self.x - (self.largTela/self.divLarg) <= (self.largTela/self.divLarg) * cc: 
                 #print("point x:",cc)
                 NewX -= 1
 
-        NewY = divAlt
-        for cr in range(divAlt):
-            if self.y - (altTela/divAlt) <= (altTela/divAlt) * cr: 
+        NewY = self.divAlt
+        for cr in range(self.divAlt):
+            if self.y - (self.altTela/self.divAlt) <= (self.altTela/self.divAlt) * cr: 
                 #print("point y:",cr)
                 NewY -= 1
         print("this is your click coordinates :",NewX,NewY)
@@ -329,6 +412,36 @@ class ClicktoChangePP:
 
 
 
+
+
+
+def check_for_touching_colors_in_recolor(nX,ADN,NewPepe,nY,sY,x):
+    print("AHAHHAHAHHAHAHAHAHAHAHHAHAHAHAHAHAHAHAHHAHAHA !!!!")
+    tester_i = 0
+    ll = len(ADN)
+    touched_colors = []
+    while tester_i < ll:
+        cor_cobaia, cor2_cobaia, (x1,y1), (x2, y2), pattern_cobaia = ADN[tester_i]
+        if (x2 == nX and (y1 <= nY < y2 or y1 < sY <= y2 or nY <= y1 < sY )) or tester_i == x - 1: #meter aqui mais uma condição
+            touched_colors.append((cor_cobaia,cor2_cobaia,pattern_cobaia))
+            print(f"I Appended : {touched_colors}")
+            #touched_colors.append(cor2_cobaia)
+        tester_i = tester_i + 1
+    nbr_touched_colors = len(touched_colors)
+    cancel_operation = 0
+    t = 0
+    while t < nbr_touched_colors:
+        if NewPepe.colorFundo == touched_colors[t][0] or NewPepe.colorFundo == touched_colors[t][1] or NewPepe.colorPattern == touched_colors[t][0] or NewPepe.colorPattern == touched_colors[t][1] or NewPepe.ShapeComand == touched_colors[t][2]:
+            if cancel_operation > 500:
+                forgivemePepes()
+                break
+            print(f"RECOLORING:::: {NewPepe.ShapeComand} = {pattern_cobaia} for {cancel_operation} nbr of times")
+            NewPepe = PepeAI()   
+            t = 0
+            cancel_operation = cancel_operation + 1
+        else:
+            t = t + 1
+    return(NewPepe)
     
 
 class ADNprocessor:
@@ -346,13 +459,23 @@ class ADNprocessor:
                     x += 1
 
 
-
-    def colorChanger(self):
+    def colorChangeReverse():
+        x = len(ADN) - 1
+        while x >= 0:
+            NewPepe = PepeAI()
+            newCorF,newCorP,(nX,nY),(sX,sY),newShapC = ADN[x]
+            newPepitos = PepeDrawer(NewPepe.colorFundo,NewPepe.colorPattern,(nX,nY),(sX,sY),newShapC)
+            newPepitos.startbyFilette()
+            x -= 1
+            
+    def colorChanger():
         x = 0
         while x < len(ADN):
             NewPepe = PepeAI()
             newCorF,newCorP,(nX,nY),(sX,sY),newShapC = ADN[x]
+            NewPepe = check_for_touching_colors_in_recolor(nX,ADN,NewPepe,nY,sY,x)
             newPepitos = PepeDrawer(NewPepe.colorFundo,NewPepe.colorPattern,(nX,nY),(sX,sY),newShapC)
+            ADN[x] = (NewPepe.colorFundo,NewPepe.colorPattern,(nX,nY),(sX,sY),newShapC)
             newPepitos.startbyFilette()
             x += 1
 
@@ -400,7 +523,7 @@ class ADNprocessor:
           #stripped_line = line.strip()
           print(x)
         CanvasRegistry.close()
-    
+
 
             
 ### ASYNCIO STARTER FOR ONLINE VERSION VISIT FOR MORE INFO on full instalation : https://www.youtube.com/watch?v=6PhDmpBcezQ&ab_channel=FinFET::::        
